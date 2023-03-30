@@ -1,0 +1,824 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/afabao.jpeg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="afabao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Angular 组件之间的交互">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angular-组件之间的交互">
+<meta property="og:url" content="https://afabao.github.io/2023/03/30/Angular-%E7%BB%84%E4%BB%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BA%A4%E4%BA%92/index.html">
+<meta property="og:site_name" content="afabao-blog">
+<meta property="og:description" content="Angular 组件之间的交互">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://afabao.github.io/img/angular.png">
+<meta property="article:published_time" content="2023-03-30T06:28:16.000Z">
+<meta property="article:modified_time" content="2023-03-30T09:28:27.184Z">
+<meta property="article:author" content="afabao">
+<meta property="article:tag" content="Angular">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://afabao.github.io/img/angular.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Angular-组件之间的交互 - afabao-blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"afabao.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>啊发包</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>文档</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" target="_blank" rel="noopener" href="https://hexo.fluid-dev.com/">
+                    
+                    <span>主题博客</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" target="_blank" rel="noopener" href="https://hexo.fluid-dev.com/docs/guide/">
+                    
+                    <span>配置指南</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" target="_blank" rel="noopener" href="https://hexo.fluid-dev.com/docs/icon/">
+                    
+                    <span>图标用法</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Angular-组件之间的交互"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-30 14:28" pubdate>
+          2023年3月30日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          113 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Angular-组件之间的交互</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><img src="/img/angular.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="组件之间的交互"><a href="#组件之间的交互" class="headerlink" title="组件之间的交互"></a>组件之间的交互</h1><h2 id="通过输入型绑定把数据从父组件传到子组件"><a href="#通过输入型绑定把数据从父组件传到子组件" class="headerlink" title="通过输入型绑定把数据从父组件传到子组件"></a>通过输入型绑定把数据从父组件传到子组件</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// hero.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Hero</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">HEROES</span> = [<br>  <span class="hljs-string">&#x27;Dr IQ&#x27;</span>,<br>  <span class="hljs-string">&#x27;Magneta&#x27;</span>,<br>  <span class="hljs-string">&#x27;Bombasto&#x27;</span><br>]<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// hero-child.component.ts</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>, <span class="hljs-title class_">Input</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Hero</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./hero&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-hero-child&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    &lt;h3&gt;&#123;&#123;hero.name&#125;&#125; says:&lt;/h3&gt;</span><br><span class="hljs-string">    &lt;p&gt;I, &#123;&#123;hero.name&#125;&#125;, am at your service, &#123;&#123;masterName&#125;&#125;.&lt;/p&gt;</span><br><span class="hljs-string">  `</span><br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HeroChildComponent</span> &#123;<br>  <span class="hljs-meta">@Input</span>() hero!: <span class="hljs-title class_">Hero</span>;<br>  <span class="hljs-meta">@Input</span>(<span class="hljs-string">&#x27;master&#x27;</span>) masterName = <span class="hljs-string">&#x27;&#x27;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// hero-parent.component.ts</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-variable constant_">HEROES</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./hero&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-hero-parent&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    &lt;h2&gt;&#123;&#123;master&#125;&#125; controls &#123;&#123;heroes.length&#125;&#125; heroes&lt;/h2&gt;</span><br><span class="hljs-string"></span><br><span class="hljs-string">    &lt;app-hero-child</span><br><span class="hljs-string">      *ngFor=&quot;let hero of heroes&quot;</span><br><span class="hljs-string">      [hero]=&quot;hero&quot;</span><br><span class="hljs-string">      [master]=&quot;master&quot;&gt;</span><br><span class="hljs-string">    &lt;/app-hero-child&gt;</span><br><span class="hljs-string">  `</span><br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HeroParentComponent</span> &#123;<br>  heroes = <span class="hljs-variable constant_">HEROES</span>;<br>  master = <span class="hljs-string">&#x27;Master&#x27;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>子组件通过<b>@Input</b>装饰器装饰变量，在父组件中的子组件标签中通过<b>[变量]</b>来传递数据。<br>如上示hero-child.component.ts代码中的hero和masterName<br>结果如下图：<br><img src="/img/Angular/%E9%80%9A%E8%BF%87%E8%BE%93%E5%85%A5%E5%9E%8B%E7%BB%91%E5%AE%9A%E6%8A%8A%E6%95%B0%E6%8D%AE%E4%BB%8E%E7%88%B6%E7%BB%84%E4%BB%B6%E4%BC%A0%E5%88%B0%E5%AD%90%E7%BB%84%E4%BB%B6.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="通过setter截听输入属性值的变化"><a href="#通过setter截听输入属性值的变化" class="headerlink" title="通过setter截听输入属性值的变化"></a>通过setter截听输入属性值的变化</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// name-child.component.ts</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>, <span class="hljs-title class_">Input</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-name-child&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">&#x27;&lt;h3&gt;&quot;&#123;&#123;name&#125;&#125;&quot;&lt;/h3&gt;&#x27;</span><br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NameChildComponent</span> &#123;<br>  <span class="hljs-meta">@Input</span>()<br>  <span class="hljs-keyword">get</span> <span class="hljs-title function_">name</span>(): <span class="hljs-built_in">string</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">_name</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">set</span> <span class="hljs-title function_">name</span>(<span class="hljs-params">name: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">_name</span> = (name &amp;&amp; name.<span class="hljs-title function_">trim</span>()) || <span class="hljs-string">&#x27;&lt;no name set&gt;&#x27;</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">private</span> _name = <span class="hljs-string">&#x27;&#x27;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// name-parent.component.ts</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-name-parent&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    &lt;h2&gt;Master controls &#123;&#123;names.length&#125;&#125; names&lt;/h2&gt;</span><br><span class="hljs-string"></span><br><span class="hljs-string">    &lt;app-name-child *ngFor=&quot;let name of names&quot; [name]=&quot;name&quot;&gt;&lt;/app-name-child&gt;</span><br><span class="hljs-string">  `</span><br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NameParentComponent</span> &#123;<br>  <span class="hljs-comment">// 显示 &#x27;Dr. IQ&#x27;, &#x27;&lt;no name set&gt;&#x27;, &#x27;Bombasto&#x27;</span><br>  names = [<span class="hljs-string">&#x27;Dr. IQ&#x27;</span>, <span class="hljs-string">&#x27;   &#x27;</span>, <span class="hljs-string">&#x27;  Bombasto  &#x27;</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>子组件中通过<b>@Input</b>修饰get和set方法，父组件中通过和输入型绑定一样的方法进行数据传递<br>结果如下图：<br><img src="/img/Angular/%E9%80%9A%E8%BF%87setter%E6%88%AA%E5%90%AC%E8%BE%93%E5%85%A5%E5%B1%9E%E6%80%A7%E5%80%BC%E7%9A%84%E5%8F%98%E5%8C%96.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="通过-ngOnChanges-来截听输入属性值的变化"><a href="#通过-ngOnChanges-来截听输入属性值的变化" class="headerlink" title="通过 ngOnChanges() 来截听输入属性值的变化"></a>通过 ngOnChanges() 来截听输入属性值的变化</h2><p>使用<code>OnChange</code>生命周期钩子接口<code>ngOnChanges()</code>方法来检测输入属性值的变化并做出回应。<br>当需要监视多个、交互式输入属性的时候，本方法比用属性的setter更合适。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// version-child.component.ts</span><br><span class="hljs-comment">// 该组件会检测输入属性major和minor的变化</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>, <span class="hljs-title class_">Input</span>, <span class="hljs-title class_">OnChanges</span>, <span class="hljs-title class_">SimpleChanges</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-version-child&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    &lt;h3&gt;Version &#123;&#123;major&#125;&#125;.&#123;&#123;minor&#125;&#125;&lt;/h3&gt;</span><br><span class="hljs-string">    &lt;h4&gt;Change log:&lt;/h4&gt;</span><br><span class="hljs-string">    &lt;ul&gt;</span><br><span class="hljs-string">      &lt;li *ngFor=&quot;let change of changeLog&quot;&gt;&#123;&#123;change&#125;&#125;&lt;/li&gt;</span><br><span class="hljs-string">    &lt;/ul&gt;</span><br><span class="hljs-string">  `</span><br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VersionChildComponent</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">OnChanges</span> &#123;<br>  <span class="hljs-meta">@Input</span>() major = <span class="hljs-number">0</span>;<br>  <span class="hljs-meta">@Input</span>() minor = <span class="hljs-number">0</span>;<br>  <span class="hljs-attr">changeLog</span>: <span class="hljs-built_in">string</span>[] = [];<br><br>  <span class="hljs-title function_">ngOnChanges</span>(<span class="hljs-params">changes: SimpleChanges</span>) &#123;<br>    <span class="hljs-keyword">const</span> <span class="hljs-attr">log</span>: <span class="hljs-built_in">string</span>[] = [];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> propName <span class="hljs-keyword">in</span> changes) &#123;<br>      <span class="hljs-keyword">const</span> changedProp = changes[propName];<br>      <span class="hljs-keyword">const</span> to = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(changedProp.<span class="hljs-property">currentValue</span>);<br>      <span class="hljs-keyword">if</span> (changedProp.<span class="hljs-title function_">isFirstChange</span>()) &#123;<br>        log.<span class="hljs-title function_">push</span>(<span class="hljs-string">`Initial value of <span class="hljs-subst">$&#123;propName&#125;</span> set to <span class="hljs-subst">$&#123;to&#125;</span>`</span>);<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">const</span> <span class="hljs-keyword">from</span> = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(changedProp.<span class="hljs-property">previousValue</span>);<br>        log.<span class="hljs-title function_">push</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;propName&#125;</span> changed from <span class="hljs-subst">$&#123;<span class="hljs-keyword">from</span>&#125;</span> to <span class="hljs-subst">$&#123;to&#125;</span>`</span>);<br>      &#125;<br>    &#125;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">changeLog</span>.<span class="hljs-title function_">push</span>(log.<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27;, &#x27;</span>));<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// version-parent.compnent.ts</span><br><span class="hljs-comment">// 该组件提供major和minor的值，把修改他们值的方法绑定到按钮上</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-version-parent&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    &lt;h2&gt;Source code version&lt;/h2&gt;</span><br><span class="hljs-string">    &lt;button type=&quot;button&quot; (click)=&quot;newMinor()&quot;&gt;New minor version&lt;/button&gt;</span><br><span class="hljs-string">    &lt;button type=&quot;button&quot; (click)=&quot;newMajor()&quot;&gt;New major version&lt;/button&gt;</span><br><span class="hljs-string">    &lt;app-version-child [major]=&quot;major&quot; [minor]=&quot;minor&quot;&gt;&lt;/app-version-child&gt;</span><br><span class="hljs-string">  `</span><br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VersionParentComponent</span> &#123;<br>  major = <span class="hljs-number">1</span>;<br>  minor = <span class="hljs-number">23</span>;<br><br>  <span class="hljs-title function_">newMinor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">minor</span>++;<br>  &#125;<br><br>  <span class="hljs-title function_">newMajor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">major</span>++;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">minor</span> = <span class="hljs-number">0</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>ngOnChanges(changes: SimpleChanges) </code>会监控<b>@Input</b>修饰的属性（输入属性）。<br>结果如下如：<br><img src="/img/Angular/ngOnChanges.gif" srcset="/img/loading.gif" lazyload></p>
+<h2 id="父组件监听子组件的事件"><a href="#父组件监听子组件的事件" class="headerlink" title="父组件监听子组件的事件"></a>父组件监听子组件的事件</h2><p>&#x2F;&#x2F; 子组件暴露一个EventEmitter属性，当时间发生时，子组件利用该属性emits（向上弹射）事件。父组件绑定到这个事件属性，并在事件发生时做出回应。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// voter.component.ts</span><br><span class="hljs-comment">// 子组件的 EventEmitter 属性是一个输出属性，通常带有@Output 装饰器</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>, <span class="hljs-title class_">EventEmitter</span>, <span class="hljs-title class_">Input</span>, <span class="hljs-title class_">Output</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-voter&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    &lt;h4&gt;&#123;&#123;name&#125;&#125;&lt;/h4&gt;</span><br><span class="hljs-string">    &lt;button type=&quot;button&quot; (click)=&quot;vote(true)&quot;  [disabled]=&quot;didVote&quot;&gt;Agree&lt;/button&gt;</span><br><span class="hljs-string">    &lt;button type=&quot;button&quot; (click)=&quot;vote(false)&quot; [disabled]=&quot;didVote&quot;&gt;Disagree&lt;/button&gt;</span><br><span class="hljs-string">  `</span><br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VoterComponent</span> &#123;<br>  <span class="hljs-meta">@Input</span>() name = <span class="hljs-string">&#x27;&#x27;</span>;<br>  <span class="hljs-meta">@Output</span>() voted = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EventEmitter</span>&lt;<span class="hljs-built_in">boolean</span>&gt;();<br>  didVote = <span class="hljs-literal">false</span>;<br><br>  <span class="hljs-title function_">vote</span>(<span class="hljs-params">agreed: <span class="hljs-built_in">boolean</span></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">voted</span>.<span class="hljs-title function_">emit</span>(agreed);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">didVote</span> = <span class="hljs-literal">true</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// votetaker.component.ts</span><br><span class="hljs-comment">// 父组件绑定了一个事件处理器(onVoted())，用来响应子组件的事件($event)并更新一个计数器。</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-vote-taker&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    &lt;h2&gt;Should mankind colonize the Universe?&lt;/h2&gt;</span><br><span class="hljs-string">    &lt;h3&gt;Agree: &#123;&#123;agreed&#125;&#125;, Disagree: &#123;&#123;disagreed&#125;&#125;&lt;/h3&gt;</span><br><span class="hljs-string"></span><br><span class="hljs-string">    &lt;app-voter</span><br><span class="hljs-string">      *ngFor=&quot;let voter of voters&quot;</span><br><span class="hljs-string">      [name]=&quot;voter&quot;</span><br><span class="hljs-string">      (voted)=&quot;onVoted($event)&quot;&gt;</span><br><span class="hljs-string">    &lt;/app-voter&gt;</span><br><span class="hljs-string">  `</span><br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VoteTakerComponent</span> &#123;<br>  agreed = <span class="hljs-number">0</span>;<br>  disagreed = <span class="hljs-number">0</span>;<br>  voters = [<span class="hljs-string">&#x27;Dr. IQ&#x27;</span>, <span class="hljs-string">&#x27;Celeritas&#x27;</span>, <span class="hljs-string">&#x27;Bombasto&#x27;</span>];<br><br>  <span class="hljs-title function_">onVoted</span>(<span class="hljs-params">agreed: <span class="hljs-built_in">boolean</span></span>) &#123;<br>    <span class="hljs-keyword">if</span> (agreed) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">agreed</span>++;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">disagreed</span>++;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>结果如下图：<br><img src="/img/Angular/%E7%88%B6%E7%BB%84%E4%BB%B6%E7%9B%91%E5%90%AC%E5%AD%90%E7%BB%84%E4%BB%B6%E7%9A%84%E4%BA%8B%E4%BB%B6.gif" srcset="/img/loading.gif" lazyload></p>
+<h2 id="父组件与子组件通过本地变量互动"><a href="#父组件与子组件通过本地变量互动" class="headerlink" title="父组件与子组件通过本地变量互动"></a>父组件与子组件通过本地变量互动</h2><p>父组件不能使用数据绑定来读取子组件的属性或调用子组件的方法。<br>但可以在父组件模版里，新建一个本地变量来代表子组件，然后用<br>这个变量来读取子组件的属性和调用子组件的方法。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// countdown-timer.component.ts</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>, <span class="hljs-title class_">OnDestroy</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-countdown-timer&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">&#x27;&lt;p&gt;&#123;&#123;message&#125;&#125;&lt;/p&gt;&#x27;</span><br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CountdownTimerComponent</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">OnDestroy</span> &#123;<br><br>  intervalId = <span class="hljs-number">0</span>;<br>  message = <span class="hljs-string">&#x27;&#x27;</span>;<br>  seconds = <span class="hljs-number">11</span>;<br><br>  <span class="hljs-title function_">ngOnDestroy</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">clearTimer</span>();<br>  &#125;<br><br>  <span class="hljs-title function_">start</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">countDown</span>();<br>  &#125;<br><br>  <span class="hljs-title function_">stop</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">clearTimer</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">message</span> = <span class="hljs-string">`Holding at T-<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.seconds&#125;</span> seconds`</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-title function_">clearTimer</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-built_in">clearInterval</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">intervalId</span>);<br>  &#125;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-title function_">countDown</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">clearTimer</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">intervalId</span> = <span class="hljs-variable language_">window</span>.<span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">seconds</span> -= <span class="hljs-number">1</span>;<br>      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">seconds</span> === <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">message</span> = <span class="hljs-string">&#x27;Blast off!&#x27;</span>;<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">seconds</span> &lt; <span class="hljs-number">0</span>) &#123;<br>          <span class="hljs-variable language_">this</span>.<span class="hljs-property">seconds</span> = <span class="hljs-number">10</span>;<br>        &#125; <span class="hljs-comment">// reset</span><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">message</span> = <span class="hljs-string">`T-<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.seconds&#125;</span> seconds and counting`</span>;<br>      &#125;<br>    &#125;, <span class="hljs-number">1000</span>);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// countdown-parent.component.ts</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">CountdownTimerComponent</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./countdown-timer.component&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-countdown-parent-lv&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    &lt;h3&gt;Countdown to Liftoff (via local variable)&lt;/h3&gt;</span><br><span class="hljs-string">    &lt;button type=&quot;button&quot; (click)=&quot;timer.start()&quot;&gt;Start&lt;/button&gt;</span><br><span class="hljs-string">    &lt;button type=&quot;button&quot; (click)=&quot;timer.stop()&quot;&gt;Stop&lt;/button&gt;</span><br><span class="hljs-string">    &lt;div class=&quot;seconds&quot;&gt;&#123;&#123;timer.seconds&#125;&#125;&lt;/div&gt;</span><br><span class="hljs-string">    &lt;app-countdown-timer #timer&gt;&lt;/app-countdown-timer&gt;</span><br><span class="hljs-string">  `</span>,<br>  <span class="hljs-attr">styleUrls</span>: [<span class="hljs-string">&#x27;../assets/demo.css&#x27;</span>]<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CountdownLocalVarParentComponent</span> &#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>父组件不能通过数据绑定使用子组件的<code>start</code>和<code>stop</code>方法，也不能访问子组件的<code>second</code>属性。<br>把本地变量(<code>#timer</code>)放到<code>&lt;app-countdown-timer&gt;</code>标签中，用来代表子组件。<br>这样父组件的模版就得到了子组件的引用，就可以在父组件的模版中访问子组件的所有属性和方法。<br><img src="/img/Angular/%E7%88%B6%E7%BB%84%E4%BB%B6%E4%B8%8E%E5%AD%90%E7%BB%84%E4%BB%B6%E9%80%9A%E8%BF%87%E6%9C%AC%E5%9C%B0%E5%8F%98%E9%87%8F%E4%BA%92%E5%8A%A8.gif" srcset="/img/loading.gif" lazyload></p>
+<h2 id="父级调用-ViewChild"><a href="#父级调用-ViewChild" class="headerlink" title="父级调用 @ViewChild()"></a>父级调用 @ViewChild()</h2><p><strong>本地变量</strong>方法是个简单明了的方法，但是有局限性，因为父组件-子组件的连接必须全部在父组件的模版中进行，<br>父组件本身的代码对子组件没有访问权。<br>如果父组件的类需要依赖于子组件，就不能用<strong>本地变量</strong>方法。<br>组件之间的父子关系不能通过在每个组件的类中各自<strong>本地变量</strong>来建立。<br>这是因为两个类的实例互相不知道，因此父类也就不能访问子类中的属性和方法。<br>当父组件类需要这种访问时，可以把子组件作为ViewChild，注到入父组件里面。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// countdown-parent.component.ts</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">AfterViewInit</span>, <span class="hljs-title class_">ViewChild</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">CountdownTimerComponent</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./countdown-timer.component&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-countdown-parent-vc&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    &lt;h3&gt;Countdown to Liftoff (via ViewChild)&lt;/h3&gt;</span><br><span class="hljs-string">    &lt;button type=&quot;button&quot; (click)=&quot;start()&quot;&gt;Start&lt;/button&gt;</span><br><span class="hljs-string">    &lt;button type=&quot;button&quot; (click)=&quot;stop()&quot;&gt;Stop&lt;/button&gt;</span><br><span class="hljs-string">    &lt;div class=&quot;seconds&quot;&gt;&#123;&#123; seconds() &#125;&#125;&lt;/div&gt;</span><br><span class="hljs-string">    &lt;app-countdown-timer&gt;&lt;/app-countdown-timer&gt;</span><br><span class="hljs-string">  `</span>,<br>  <span class="hljs-attr">styleUrls</span>: [<span class="hljs-string">&#x27;../assets/demo.css&#x27;</span>]<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CountdownViewChildParentComponent</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">AfterViewInit</span> &#123;<br><br>  <span class="hljs-meta">@ViewChild</span>(<span class="hljs-title class_">CountdownTimerComponent</span>)<br>  <span class="hljs-keyword">private</span> timerComponent!: <span class="hljs-title class_">CountdownTimerComponent</span>;<br><br>  <span class="hljs-title function_">seconds</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  &#125;<br><br>  <span class="hljs-title function_">ngAfterViewInit</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// Redefine `seconds()` to get from the `CountdownTimerComponent.seconds` ...</span><br>    <span class="hljs-comment">// but wait a tick first to avoid one-time devMode</span><br>    <span class="hljs-comment">// unidirectional-data-flow-violation error</span><br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">seconds</span> = <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">timerComponent</span>.<span class="hljs-property">seconds</span>, <span class="hljs-number">0</span>);<br>  &#125;<br><br>  <span class="hljs-title function_">start</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">timerComponent</span>.<span class="hljs-title function_">start</span>();<br>  &#125;<br><br>  <span class="hljs-title function_">stop</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">timerComponent</span>.<span class="hljs-title function_">stop</span>();<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>private timerComponent!: CountdownTimerComponent;</code>将CountdownTimerComponent注入到私有属性timerComponent里面。<br>使用timerComponent来调用子组件中的方法。<br>组件元数据里就不再需要 #timer 本地变量了。而是把按钮绑定到父组件自己的 start 和 stop 方法，使用父组件的 seconds 方法的插值来展示秒数变化。</p>
+<p>这些方法可以直接访问被注入的计时器组件。</p>
+<p>ngAfterViewInit() 生命周期钩子是非常重要的一步。被注入的计时器组件只有在 Angular 显示了父组件视图之后才能访问，所以它先把秒数显示为 0。</p>
+<p>然后 Angular 会调用 ngAfterViewInit 生命周期钩子，但这时候再更新父组件视图的倒计时就已经太晚了。Angular 的单向数据流规则会阻止在同一个周期内更新父组件视图。应用在显示秒数之前会被迫再等一轮。</p>
+<p>使用 setTimeout() 来等下一轮，然后改写 seconds() 方法，这样它接下来就会从注入的这个计时器组件里获取秒数的值。</p>
+<h2 id="父组件和子组件通过服务来通讯"><a href="#父组件和子组件通过服务来通讯" class="headerlink" title="父组件和子组件通过服务来通讯"></a>父组件和子组件通过服务来通讯</h2><p>父组件和它的子组件共享同一个服务，利用该服务在<strong>组件家族内部</strong>实现双向通讯</p>
+<p>该服务实例的作用域被限制在父组件和子组件内。这个组件子树之外的组件将无法访问该服务或者与他们通讯</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// mission.service.ts</span><br><span class="hljs-comment">// 这个服务把MissionControlComponent和多个AstronautComponent子组件连接起来</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Injectable</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Subject</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;rxjs&#x27;</span>;<br><br><span class="hljs-meta">@Injectable</span>()<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MissionService</span> &#123;<br><br>  <span class="hljs-comment">// Observable string sources</span><br>  <span class="hljs-keyword">private</span> missionAnnouncedSource = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Subject</span>&lt;<span class="hljs-built_in">string</span>&gt;();<br>  <span class="hljs-keyword">private</span> missionConfirmedSource = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Subject</span>&lt;<span class="hljs-built_in">string</span>&gt;();<br><br>  <span class="hljs-comment">// Observable string streams</span><br>  missionAnnounced$ = <span class="hljs-variable language_">this</span>.<span class="hljs-property">missionAnnouncedSource</span>.<span class="hljs-title function_">asObservable</span>();<br>  missionConfirmed$ = <span class="hljs-variable language_">this</span>.<span class="hljs-property">missionConfirmedSource</span>.<span class="hljs-title function_">asObservable</span>();<br><br>  <span class="hljs-comment">// Service message commands</span><br>  <span class="hljs-title function_">announceMission</span>(<span class="hljs-params">mission: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">missionAnnouncedSource</span>.<span class="hljs-title function_">next</span>(mission);<br>  &#125;<br><br>  <span class="hljs-title function_">confirmMission</span>(<span class="hljs-params">astronaut: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">missionConfirmedSource</span>.<span class="hljs-title function_">next</span>(astronaut);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// mission-control.component.ts</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">MissionService</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./mission.service&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-mission-control&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    &lt;h2&gt;Mission Control&lt;/h2&gt;</span><br><span class="hljs-string">    &lt;button type=&quot;button&quot; (click)=&quot;announce()&quot;&gt;Announce mission&lt;/button&gt;</span><br><span class="hljs-string"></span><br><span class="hljs-string">    &lt;app-astronaut</span><br><span class="hljs-string">      *ngFor=&quot;let astronaut of astronauts&quot;</span><br><span class="hljs-string">      [astronaut]=&quot;astronaut&quot;&gt;</span><br><span class="hljs-string">    &lt;/app-astronaut&gt;</span><br><span class="hljs-string"></span><br><span class="hljs-string">    &lt;h3&gt;History&lt;/h3&gt;</span><br><span class="hljs-string">    &lt;ul&gt;</span><br><span class="hljs-string">      &lt;li *ngFor=&quot;let event of history&quot;&gt;&#123;&#123;event&#125;&#125;&lt;/li&gt;</span><br><span class="hljs-string">    &lt;/ul&gt;</span><br><span class="hljs-string">  `</span>,<br>  <span class="hljs-attr">providers</span>: [<span class="hljs-title class_">MissionService</span>]<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MissionControlComponent</span> &#123;<br>  astronauts = [<span class="hljs-string">&#x27;Lovell&#x27;</span>, <span class="hljs-string">&#x27;Swigert&#x27;</span>, <span class="hljs-string">&#x27;Haise&#x27;</span>];<br>  <span class="hljs-attr">history</span>: <span class="hljs-built_in">string</span>[] = [];<br>  missions = [<span class="hljs-string">&#x27;Fly to the moon!&#x27;</span>,<br>    <span class="hljs-string">&#x27;Fly to mars!&#x27;</span>,<br>    <span class="hljs-string">&#x27;Fly to Vegas!&#x27;</span>];<br>  nextMission = <span class="hljs-number">0</span>;<br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> missionService: MissionService</span>) &#123;<br>    missionService.<span class="hljs-property">missionConfirmed$</span>.<span class="hljs-title function_">subscribe</span>(<br>      <span class="hljs-function"><span class="hljs-params">astronaut</span> =&gt;</span> &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">history</span>.<span class="hljs-title function_">push</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;astronaut&#125;</span> confirmed the mission`</span>);<br>      &#125;);<br>  &#125;<br><br>  <span class="hljs-title function_">announce</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> mission = <span class="hljs-variable language_">this</span>.<span class="hljs-property">missions</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">nextMission</span>++];<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">missionService</span>.<span class="hljs-title function_">announceMission</span>(mission);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">history</span>.<span class="hljs-title function_">push</span>(<span class="hljs-string">`Mission &quot;<span class="hljs-subst">$&#123;mission&#125;</span>&quot; announced`</span>);<br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">nextMission</span> &gt;= <span class="hljs-variable language_">this</span>.<span class="hljs-property">missions</span>.<span class="hljs-property">length</span>) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">nextMission</span> = <span class="hljs-number">0</span>;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// astronaut.component.ts</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Component</span>, <span class="hljs-title class_">Input</span>, <span class="hljs-title class_">OnDestroy</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">MissionService</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./mission.service&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Subscription</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;rxjs&#x27;</span>;<br><br><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-astronaut&#x27;</span>,<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    &lt;p&gt;</span><br><span class="hljs-string">      &#123;&#123;astronaut&#125;&#125;: &lt;strong&gt;&#123;&#123;mission&#125;&#125;&lt;/strong&gt;</span><br><span class="hljs-string">      &lt;button</span><br><span class="hljs-string">        type=&quot;button&quot;</span><br><span class="hljs-string">        (click)=&quot;confirm()&quot;</span><br><span class="hljs-string">        [disabled]=&quot;!announced || confirmed&quot;&gt;</span><br><span class="hljs-string">        Confirm</span><br><span class="hljs-string">      &lt;/button&gt;</span><br><span class="hljs-string">    &lt;/p&gt;</span><br><span class="hljs-string">  `</span><br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AstronautComponent</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">OnDestroy</span> &#123;<br>  <span class="hljs-meta">@Input</span>() astronaut = <span class="hljs-string">&#x27;&#x27;</span>;<br>  mission = <span class="hljs-string">&#x27;&lt;no mission announced&gt;&#x27;</span>;<br>  confirmed = <span class="hljs-literal">false</span>;<br>  announced = <span class="hljs-literal">false</span>;<br>  <span class="hljs-attr">subscription</span>: <span class="hljs-title class_">Subscription</span>;<br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> missionService: MissionService</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">subscription</span> = missionService.<span class="hljs-property">missionAnnounced$</span>.<span class="hljs-title function_">subscribe</span>(<br>      <span class="hljs-function"><span class="hljs-params">mission</span> =&gt;</span> &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">mission</span> = mission;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">announced</span> = <span class="hljs-literal">true</span>;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">confirmed</span> = <span class="hljs-literal">false</span>;<br>      &#125;);<br>  &#125;<br><br>  <span class="hljs-title function_">confirm</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">confirmed</span> = <span class="hljs-literal">true</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">missionService</span>.<span class="hljs-title function_">confirmMission</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">astronaut</span>);<br>  &#125;<br><br>  <span class="hljs-title function_">ngOnDestroy</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// prevent memory leak when component destroyed</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">subscription</span>.<span class="hljs-title function_">unsubscribe</span>();<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><img src="/img/Angular/%E7%88%B6%E7%BB%84%E4%BB%B6%E5%92%8C%E5%AD%90%E7%BB%84%E4%BB%B6%E9%80%9A%E8%BF%87%E6%9C%8D%E5%8A%A1%E6%9D%A5%E9%80%9A%E8%AE%AF.png" srcset="/img/loading.gif" lazyload></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Angular/" class="category-chain-item">Angular</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Angular/">#Angular</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Angular-组件之间的交互</div>
+      <div>https://afabao.github.io/2023/03/30/Angular-组件之间的交互/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>afabao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/30/Angular-%E5%B8%B8%E8%A7%81API/" title="Angular-常见API">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Angular-常见API</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/29/Angular-%E7%BB%84%E4%BB%B6/" title="Angular-组件">
+                        <span class="hidden-mobile">Angular-组件</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://afabao.github.io/2023/03/30/Angular-%E7%BB%84%E4%BB%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BA%A4%E4%BA%92/';
+          this.page.identifier = '/2023/03/30/Angular-%E7%BB%84%E4%BB%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BA%A4%E4%BA%92/';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'fluid' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -16,16 +16,16 @@
   <meta name="author" content="afabao">
   <meta name="keywords" content="">
   
-    <meta name="description" content="本文介绍Angular的环境搭建">
+    <meta name="description" content="Angular 组件">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Angular-安装">
-<meta property="og:url" content="https://afabao.github.io/2023/03/28/Angular-%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:title" content="Angular-组件">
+<meta property="og:url" content="https://afabao.github.io/2023/03/29/Angular-%E7%BB%84%E4%BB%B6/index.html">
 <meta property="og:site_name" content="afabao-blog">
-<meta property="og:description" content="本文介绍Angular的环境搭建">
+<meta property="og:description" content="Angular 组件">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://afabao.github.io/img/angular.png">
-<meta property="article:published_time" content="2023-03-28T08:55:19.000Z">
-<meta property="article:modified_time" content="2023-03-29T02:40:07.649Z">
+<meta property="article:published_time" content="2023-03-29T02:37:36.000Z">
+<meta property="article:modified_time" content="2023-03-29T02:55:57.827Z">
 <meta property="article:author" content="afabao">
 <meta property="article:tag" content="Angular">
 <meta name="twitter:card" content="summary_large_image">
@@ -35,7 +35,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Angular-安装 - afabao-blog</title>
+  <title>Angular-组件 - afabao-blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -268,7 +268,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Angular-安装"></span>
+            <span id="subtitle" data-typed-text="Angular-组件"></span>
           
         </div>
 
@@ -279,8 +279,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-03-28 16:55" pubdate>
-          2023年3月28日 下午
+        <time datetime="2023-03-29 10:37" pubdate>
+          2023年3月29日 上午
         </time>
       </span>
     
@@ -291,7 +291,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          211 字
+          1.1k 字
         
       </span>
     
@@ -302,7 +302,7 @@
         
         
         
-          2 分钟
+          10 分钟
         
       </span>
     
@@ -340,23 +340,70 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Angular-安装</h1>
+            <h1 style="display: none">Angular-组件</h1>
             
             
               <div class="markdown-body">
                 
-                <p><img src="/img/angular.png" srcset="/img/loading.gif" lazyload></p>
-<h1 id="安装-Angular-CLI"><a href="#安装-Angular-CLI" class="headerlink" title="安装 Angular CLI"></a>安装 Angular CLI</h1><p>要安装 Angular CLI，请打开终端&#x2F;控制台窗口，并运行如下命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm install -g @angular/cli<br></code></pre></td></tr></table></figure>
-<h1 id="创建工作区和初始应用"><a href="#创建工作区和初始应用" class="headerlink" title="创建工作区和初始应用"></a>创建工作区和初始应用</h1><ul>
-<li>运行CLI命令ng new并提供 my-app 名称作为参数<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ng new my-app<br></code></pre></td></tr></table></figure></li>
-<li>ng new 命令会提示你提供要把哪些特性包含在初始应用中</li>
+                <h1 id="Angular-组件概述"><a href="#Angular-组件概述" class="headerlink" title="Angular 组件概述"></a>Angular 组件概述</h1><p>组件是 Angular 应用的主要构造块。每个组件包括如下部分：</p>
+<ul>
+<li>一个 HTML 模板，用于声明页面要渲染的内容</li>
+<li>一个用于定义行为的 TypeScript 类</li>
+<li>一个 CSS 选择器，用于定义组件在模板中的使用方式</li>
+<li>（可选）要应用在模板上的 CSS 样式</li>
 </ul>
-<h1 id="运行应用"><a href="#运行应用" class="headerlink" title="运行应用"></a>运行应用</h1><ul>
-<li>导航到工作目录<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd my-app<br></code></pre></td></tr></table></figure></li>
-<li>启动命令<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">ng serve --opne<br><span class="hljs-meta prompt_"># </span><span class="language-bash">--open 打开浏览器</span><br></code></pre></td></tr></table></figure></li>
-<li>成功后入下入所示<br><img src="/img/Angular/init.png" srcset="/img/loading.gif" lazyload></li>
-</ul>
+<h1 id="生命周期钩子"><a href="#生命周期钩子" class="headerlink" title="生命周期钩子"></a>生命周期钩子</h1><p><strong>可以使用生命周期钩子方法来触发组件或指令生命周期中的关键时间， 以初始化新实例，需要时启动变更检测，在变更检测过程中响应更新，并在删除实例之前进行清理</strong></p>
+<h2 id="响应生命周期事件"><a href="#响应生命周期事件" class="headerlink" title="响应生命周期事件"></a>响应生命周期事件</h2><h3 id="生命周期的顺序"><a href="#生命周期的顺序" class="headerlink" title="生命周期的顺序"></a>生命周期的顺序</h3><p>当你的应用通过调用构造函数来实例化一个组件或指令时，Angular 就会调用那个在该实例生命周期的适当位置实现了的那些钩子方法。</p>
+<p>Angular 会按以下顺序执行钩子方法</p>
+<table>
+<thead>
+<tr>
+<th align="left">钩子方法</th>
+<th align="left">用途</th>
+<th align="left">时机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ngOnChanges()</td>
+<td align="left">当Angular设置或重新设置数据绑定的输入属性是响应</td>
+<td align="left">如果组件绑定过输入属性，那么在ngOnInit()之前以及所绑定的一个或多个输入属性的值发生变化时都会调用</td>
+</tr>
+<tr>
+<td align="left">ngOnInit()</td>
+<td align="left">在 Angular 第一次显示数据绑定和设置指令&#x2F;组件的输入属性之后，初始化指令&#x2F;组件</td>
+<td align="left">在第一轮 ngOnChanges() 完成之后调用，只调用一次。而且即使没有调用过 ngOnChanges()，也仍然会调用 ngOnInit()（比如当模板中没有绑定任何输入属性时）。</td>
+</tr>
+<tr>
+<td align="left">ngDoCheck()</td>
+<td align="left">检测，并在发生 Angular 无法或不愿意自己检测的变化时作出反应</td>
+<td align="left">紧跟在每次执行变更检测时的 ngOnChanges() 和 首次执行变更检测时的 ngOnInit() 后调用</td>
+</tr>
+<tr>
+<td align="left">ngAfterContentInit()</td>
+<td align="left">当 Angular 把外部内容投影进组件视图或指令所在的视图之后调用</td>
+<td align="left">第一次 ngDoCheck() 之后调用，只调用一次。</td>
+</tr>
+<tr>
+<td align="left">ngAfterContentChecked()</td>
+<td align="left">每当 Angular 检查完被投影到组件或指令中的内容之后调用</td>
+<td align="left">ngAfterContentInit() 和每次 ngDoCheck() 之后调用</td>
+</tr>
+<tr>
+<td align="left">ngAfterViewInit()</td>
+<td align="left">当 Angular 初始化完组件视图及其子视图或包含该指令的视图之后调用</td>
+<td align="left">第一次 ngAfterContentChecked() 之后调用，只调用一次</td>
+</tr>
+<tr>
+<td align="left">ngAfterViewChecked()</td>
+<td align="left">每当 Angular 做完组件视图和子视图或包含该指令的视图的变更检测之后调用</td>
+<td align="left">ngAfterViewInit() 和每次 ngAfterContentChecked() 之后调用</td>
+</tr>
+<tr>
+<td align="left">ngOnDestroy()</td>
+<td align="left">每当 Angular 每次销毁指令&#x2F;组件之前调用并清扫。在这儿反订阅可观察对象和分离事件处理器，以防内存泄漏</td>
+<td align="left">在 Angular 销毁指令或组件之前立即调用</td>
+</tr>
+</tbody></table>
 
                 
               </div>
@@ -402,8 +449,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Angular-安装</div>
-      <div>https://afabao.github.io/2023/03/28/Angular-安装/</div>
+      <div>Angular-组件</div>
+      <div>https://afabao.github.io/2023/03/29/Angular-组件/</div>
     </div>
     <div class="license-meta">
       
@@ -415,7 +462,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年3月28日</div>
+          <div>2023年3月29日</div>
         </div>
       
       
@@ -453,9 +500,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/29/Angular-%E7%BB%84%E4%BB%B6/" title="Angular-组件">
+                      <a href="/2023/03/30/Angular-%E7%BB%84%E4%BB%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BA%A4%E4%BA%92/" title="Angular-组件之间的交互">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Angular-组件</span>
+                        <span class="hidden-mobile">Angular-组件之间的交互</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -463,8 +510,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/03/28/hello-world/" title="Hello World">
-                        <span class="hidden-mobile">Hello World</span>
+                      <a href="/2023/03/28/Angular-%E5%AE%89%E8%A3%85/" title="Angular-安装">
+                        <span class="hidden-mobile">Angular-安装</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -484,8 +531,8 @@
     
       <script type="text/javascript">
         var disqus_config = function() {
-          this.page.url = 'https://afabao.github.io/2023/03/28/Angular-%E5%AE%89%E8%A3%85/';
-          this.page.identifier = '/2023/03/28/Angular-%E5%AE%89%E8%A3%85/';
+          this.page.url = 'https://afabao.github.io/2023/03/29/Angular-%E7%BB%84%E4%BB%B6/';
+          this.page.identifier = '/2023/03/29/Angular-%E7%BB%84%E4%BB%B6/';
         };
         Fluid.utils.loadComments('#disqus_thread', function() {
           var d = document, s = d.createElement('script');
